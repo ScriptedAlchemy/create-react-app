@@ -5,7 +5,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-// @remove-on-eject-end
+// @remove-on-eject-end-
 'use strict';
 
 const autoprefixer = require('autoprefixer');
@@ -13,7 +13,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
@@ -51,7 +51,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
   const loaders = [
-    MiniCssExtractPlugin.loader,
+    ExtractCssChunks.loader,
     {
       loader: require.resolve('css-loader'),
       options: cssOptions,
@@ -311,7 +311,7 @@ module.exports = {
           },
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.
-          // `MiniCSSExtractPlugin` extracts styles into CSS
+          // `ExtractCssChunks` extracts styles into CSS
           // files. If you use code splitting, async bundles will have their own separate CSS chunk file.
           // By default we support CSS Modules with the extension .module.css
           {
@@ -418,7 +418,7 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
-    new MiniCssExtractPlugin({
+    new ExtractCssChunks({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: 'static/css/[name].[contenthash:8].css',

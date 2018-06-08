@@ -16,6 +16,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const getClientEnvironment = require('./env');
@@ -41,7 +42,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
   const loaders = [
-    require.resolve('style-loader'),
+    ExtractCssChunks.loader,
     {
       loader: require.resolve('css-loader'),
       options: cssOptions,
@@ -165,6 +166,13 @@ module.exports = {
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+      new ExtractCssChunks({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: 'static/css/[name].css',
+        chunkFilename: 'static/css/[name].chunk.css',
+        hot: true,
+      }),
     ],
   },
   module: {
@@ -225,7 +233,7 @@ module.exports = {
               {
                 loader: require.resolve('thread-loader'),
                 options: {
-                  poolTimeout: Infinity // keep workers alive for more effective watch mode
+                  poolTimeout: Infinity, // keep workers alive for more effective watch mode
                 },
               },
               {
@@ -266,7 +274,7 @@ module.exports = {
               {
                 loader: require.resolve('thread-loader'),
                 options: {
-                  poolTimeout: Infinity // keep workers alive for more effective watch mode
+                  poolTimeout: Infinity, // keep workers alive for more effective watch mode
                 },
               },
               {
